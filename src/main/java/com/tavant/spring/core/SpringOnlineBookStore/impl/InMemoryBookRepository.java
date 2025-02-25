@@ -20,10 +20,14 @@ public class InMemoryBookRepository implements BookRepository {
 
     @Override
     public void updateBook(Book book) {
-        int index = books.indexOf(getBookById(book.getId()));
-        if (index != -1) {
-            books.set(index, book);
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId() == book.getId()) {
+                books.set(i, book);
+                return;
+            }
         }
+        // If the book doesn't exist, add it
+        books.add(book);
     }
 
     @Override
