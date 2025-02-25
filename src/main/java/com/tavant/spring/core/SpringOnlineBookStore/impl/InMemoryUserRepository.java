@@ -19,12 +19,15 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public void updateUser(User user) {
-        int index = users.indexOf(getUserById(user.getId()));
-        if (index != -1) {
-            users.set(index, user);
+public void updateUser(User user) {
+    for (int i = 0; i < users.size(); i++) {
+        if (users.get(i).getId() == user.getId()) {
+            users.set(i, user);
+            return;
         }
     }
+    users.add(user);
+}
 
     @Override
     public User getUserById(int id) {
