@@ -77,7 +77,7 @@ public class App {
             scanner.nextLine();  // Consume newline
 
             switch (choice) {
-                case 1:
+               case 1:
                     System.out.println("Enter book details (id, title, author, price, category):");
                     int id = scanner.nextInt();
                     scanner.nextLine();
@@ -87,7 +87,7 @@ public class App {
                     scanner.nextLine();
                     String category = scanner.nextLine();
                     Book book = new Book(id, title, author, price, category);
-                    bookService.updateBook(book);
+                    bookService.addBook(book); // Changed from updateBook to addBook
                     System.out.println("Book added.");
                     break;
                 case 2:
@@ -167,7 +167,7 @@ public class App {
                     String updateEmail = scanner.nextLine();
                     String updatePassword = scanner.nextLine();
                     User updateUser = new User(updateId, updateName, updateEmail, updatePassword);
-                    userService.addUser(updateUser);
+                    userService.updateUser(updateUser); // Changed from addUser to updateUser
                     System.out.println("User updated.");
                     break;
                 case 4:
