@@ -189,52 +189,60 @@ public class App {
     }
 
     private static void manageCart(Scanner scanner) {
-        while (true) {
-            System.out.println("Manage Cart:");
-            System.out.println("1. Add Book to Cart");
-            System.out.println("2. Remove Book from Cart");
-            System.out.println("3. View Cart");
-            System.out.println("4. Back to Main Menu");
-            int choice = scanner.nextInt();
-            scanner.nextLine();  // Consume newline
+    while (true) {
+        System.out.println("Manage Cart:");
+        System.out.println("1. Add Book to Cart");
+        System.out.println("2. Remove Book from Cart");
+        System.out.println("3. View Cart");
+        System.out.println("4. Back to Main Menu");
+        int choice = scanner.nextInt();
+        scanner.nextLine();  // Consume newline
 
-            switch (choice) {
-                case 1:
-                    System.out.println("Enter user id and book details (id, title, author, price, category):");
-                    int userId = scanner.nextInt();
-                    scanner.nextLine();
-                    int bookId = scanner.nextInt();
-                    scanner.nextLine();
-                    String title = scanner.nextLine();
-                    String author = scanner.nextLine();
-                    double price = scanner.nextDouble();
-                    scanner.nextLine();
-                    String category = scanner.nextLine();
-                    Book book = new Book(bookId, title, author, price, category);
+        switch (choice) {
+            case 1:
+                System.out.println("Enter user id and book id to add to cart:");
+                int userId = scanner.nextInt();
+                int bookId = scanner.nextInt();
+                
+                // Get the book from the bookService instead of manual input
+                Book book = bookService.getBookById(bookId);
+                
+                if (book != null) {
                     cartService.addBookToCart(userId, book);
                     System.out.println("Book added to cart.");
-                    break;
-                case 2:
-                    System.out.println("Enter user id and book id to remove from cart:");
-                    int removeUserId = scanner.nextInt();
-                    int removeBookId = scanner.nextInt();
-                    Book removeBook = bookService.getBookById(removeBookId);
+                } else {
+                    System.out.println("Book with ID " + bookId + " not found.");
+                }
+                break;
+            case 2:
+                System.out.println("Enter user id and book id to remove from cart:");
+                int removeUserId = scanner.nextInt();
+                int removeBookId = scanner.nextInt();
+                Book removeBook = bookService.getBookById(removeBookId);
+                if (removeBook != null) {
                     cartService.removeBookFromCart(removeUserId, removeBook);
                     System.out.println("Book removed from cart.");
-                    break;
-                case 3:
-                    System.out.println("Enter user id to view cart:");
-                    int viewUserId = scanner.nextInt();
-                    List<Book> cartBooks = cartService.viewCart(viewUserId);
+                } else {
+                    System.out.println("Book with ID " + removeBookId + " not found.");
+                }
+                break;
+            case 3:
+                System.out.println("Enter user id to view cart:");
+                int viewUserId = scanner.nextInt();
+                List<Book> cartBooks = cartService.viewCart(viewUserId);
+                if (cartBooks.isEmpty()) {
+                    System.out.println("Cart is empty.");
+                } else {
                     cartBooks.forEach(System.out::println);
-                    break;
-                case 4:
-                    return;
-                default:
-                    System.out.println("Invalid option. Please try again.");
-            }
+                }
+                break;
+            case 4:
+                return;
+            default:
+                System.out.println("Invalid option. Please try again.");
         }
     }
+}
 
     private static void manageOrders(Scanner scanner) {
         while (true) {
